@@ -11,7 +11,7 @@ RESTful APIs have been widely used to distribute biological data in a programmat
 
 ## Requirements
 1. Python >= 2.6 (including python 3)
-2.[requests](https://pypi.python.org/pypi/requests) (install using "pip install requests")
+2. [requests](https://pypi.python.org/pypi/requests) (install using "pip install requests")
 3. [pyld](https://pypi.python.org/pypi/PyLD/0.7.2) (install using "pip install PyLD")
 4. [biothings_client](https://pypi.python.org/pypi/biothings-client/0.1.1) (install using "pip install biothings_client")
 
