@@ -4,7 +4,7 @@
 RESTful APIs have been widely used to distribute biological data in a programmatic manner. BioThings Explorer Python Package empowers users to explore the relationship between different biological entities through the vast amount of biological data provided by various API resources. Currently, the following API resources are available for explore:
 	1. [MyGene.info API](http://mygene.info)
 	2. [MyVariant.info API](http://myvariant.info)
-	3. [Drug and Compound API](http://c.biothigns.io)
+	3. [Drug and Compound API](http://c.biothings.io)
 	4. [Reactome API](http://reactome.org/ContentService/)
 	5. [Lynx API](http://lynx.ci.uchicago.edu/webservices.html)
 	6. [DGIdb API](http://dgidb.genome.wustl.edu/api)
