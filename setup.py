@@ -9,7 +9,7 @@ def read(fname):
 setup(
     name="biothings_explorer",
     version="0.1.0",
-    author="Chunlei Wu, Jiwen Xin",
+    author="Jiwen Xin, Chunlei Wu",
     author_email="cwu@scripps.edu",
     description="Python Client for BioThings Explorer",
     license="BSD",
@@ -22,8 +22,9 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
         "Development Status :: 4 - Beta",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: POSIX",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: Microsoft :: Windows",
@@ -35,5 +36,7 @@ setup(
     ],
     install_requires=[
         'requests>=2.3.0',
+        "pyld>=0.7.2",
+        'biothings_client>=0.1.1'
     ],
 )
