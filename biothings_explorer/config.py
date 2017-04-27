@@ -121,7 +121,7 @@ AVAILABLE_API_SOURCES = {
         "query_syntax": "http://mygene.info/v3/query?q=*",
         "description": "gene annotation service",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/mygene_context.json"
+            "context_file_path": "biothings_explorer/context/mygene_context.json"
         }
     },
     "myvariant.info": {
@@ -130,7 +130,7 @@ AVAILABLE_API_SOURCES = {
         "annotate_syntax": "http://myvariant.info/v1/variant/*",
         "query_syntax": "http://myvariant.info/v1/query?q=*",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/myvariant_context.json"
+            "context_file_path": "biothings_explorer/context/myvariant_context.json"
         }
     },
     "mydrug.info": {
@@ -139,7 +139,7 @@ AVAILABLE_API_SOURCES = {
         "annotate_syntax": "http://c.biothings.io/v1/drug/*",
         "query_syntax": "http://c.biothings.io/v1/query?q=*",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/mydrug_context.json"
+            "context_file_path": "biothings_explorer/context/mydrug_context.json"
         }
     },
     "dgidb": {
@@ -147,7 +147,7 @@ AVAILABLE_API_SOURCES = {
         "query_ids": ["drug_symbol"],
         "annotate_syntax": "http://localhost:8899/dgidb/*",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/dgidb_context.json"
+            "context_file_path": "biothings_explorer/context/dgidb_context.json"
         }
     },
     "lynx_symptoms": {
@@ -155,7 +155,7 @@ AVAILABLE_API_SOURCES = {
         "query_ids": ["entrez_gene_id", "symptom"],
         "annotate_syntax": "http://lynx.ci.uchicago.edu/gediresources/resources/genes/9606/*/symptoms",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/lynx_symptom_context.json"
+            "context_file_path": "biothings_explorer/context/lynx_symptom_context.json"
         }
     },
     "lynx_disease": {
@@ -163,7 +163,7 @@ AVAILABLE_API_SOURCES = {
         "query_ids": ["entrez_gene_id", "diseaseontology_id", "disease_name"],
         "annotate_syntax": "http://lynx.ci.uchicago.edu/gediresources/resources/genes/9606/*/diseases",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/lynx_disease_context.json"
+            "context_file_path": "biothings_explorer/context/lynx_disease_context.json"
         }
     },
     "reactome_lower": {
@@ -171,7 +171,7 @@ AVAILABLE_API_SOURCES = {
         "query_ids": ["reactome_id", "pathway_name"],
         "annotate_syntax": "http://reactome.org/ContentService/data/pathways/low/diagram/entity/*/allForms?speciesId=48887",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/reactome_lower_context.json"
+            "context_file_path": "biothings_explorer/context/reactome_lower_context.json"
         }
     },
     "reactome": {
@@ -179,7 +179,7 @@ AVAILABLE_API_SOURCES = {
         "query_ids": ["reactome_id"],
         "annotate_syntax": "http://localhost:8899/reactome/*",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/reactome_context.json"
+            "context_file_path": "biothings_explorer/context/reactome_context.json"
         }
     },
     "static_protein_interaction": {
@@ -187,7 +187,7 @@ AVAILABLE_API_SOURCES = {
         "query_ids": ["uniprot_id"],
         "annotate_syntax": "http://reactome.org/ContentService/interactors/static/molecule/*/details?page=-1&pageSize=-1",
         "jsonld": {
-            "context_file_path": "BioThingsExplorer/context/protein_interaction_context.json"
+            "context_file_path": "biothings_explorer/context/protein_interaction_context.json"
         }
     }
 }
@@ -206,6 +206,7 @@ def add_interaction_resources():
                 annotate_syntax = 'http://reactome.org/ContentService/interactors/psicquic/molecule/' + _doc['name'] + '/*/details'
                 AVAILABLE_API_SOURCES.update({api_name: {"annotate_ids": ['uniprot_id'], "query_ids": ["uniprot-id"],
                                                          "annotate_syntax": annotate_syntax, "jsonld": {"context_file_path":
+                                                                                                        
                                                                                                         "context/protein_interaction_context.json"}}})
 
 add_interaction_resources()
