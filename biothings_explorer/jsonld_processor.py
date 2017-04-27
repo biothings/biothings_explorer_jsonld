@@ -53,8 +53,8 @@ def flatten_doc(doc, outfield_sep='.', sort=True):
     new_dict = {}
     _recursion_helper(doc, ret, '')
     if sort:
-        return OrderedDict(sorted([(k,v[0]) if len(v) == 1 else (k,v) for (k,v) in ret.items()], key=lambda x: x[0]))
-    for (k,v) in ret.items():
+        return OrderedDict(sorted([(k, v[0]) if len(v) == 1 else (k, v) for (k, v) in ret.items()], key=lambda x: x[0]))
+    for (k, v) in ret.items():
         if len(v) == 1:
             new_dict[k] = v[0]
         else:
@@ -86,7 +86,7 @@ def jsonld_converter(json_doc, api):
     '''
     context = load_context(api)
     json_doc.update(context)
-    return jsonld_doc
+    return json_doc
 
 def fetch_value_by_uri_relation(nquads, uri, relation=None):
     '''
@@ -134,7 +134,7 @@ def get_uri_value_relation(nquads):
             results[_id].append([relation, value])
         else:
             results[_id] = []
-            results[_id].append([relation,value])
+            results[_id].append([relation, value])
     return results
 
 def get_nquads_from_url(url, api):
