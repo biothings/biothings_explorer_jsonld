@@ -16,6 +16,8 @@ setup(
     keywords="link API interoperability biology explore",
     url="https://github.com/biothings/biothings_explorer",
     packages=['biothings_explorer'],
+    package_data={'biothings_explorer': ['context']},
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
