@@ -207,7 +207,7 @@ AVAILABLE_API_SOURCES = {
     	"query_ids": ["drug_effect", "pharmacology_class"],
     	"annotate_syntax": "https://api.fda.gov/drug/event.json?search=generic_name:*",
     	"jsonld": {
-    		"context_file_path": "biothings_explorer/context/openfda.json"
+    		"context_file_path": os.path.join(BUILDIN_CONTEXT_PATH, "openfda.json")
     	}
     }
 }
