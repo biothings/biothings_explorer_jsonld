@@ -108,6 +108,14 @@ AVAILABLE_IDS = {
     "pathway_name": {
         "uri": "http://identifiers.org/pathway.name",
         "example": "Deubiquitination"
+    },
+    "drug_effect": {
+    	"uri": "http://identifiers.org/drug_effect/",
+    	"example": "Renal impairment"
+    },
+    "pharmacology_class": {
+    	"uri": "http://identifiers.org/pharm_class/",
+    	"example": "Nonsteroidal Anti-inflammatory Compounds [Chemical/Ingredient]"
     }
 }
 
@@ -189,6 +197,14 @@ AVAILABLE_API_SOURCES = {
         "jsonld": {
             "context_file_path": "biothings_explorer/context/protein_interaction_context.json"
         }
+    },
+    "openfda": {
+    	"annotate_ids": ["drug_symbol"],
+    	"query_ids": ["drug_effect", "pharmacology_class"],
+    	"annotate_syntax": "https://api.fda.gov/drug/event.json?search=generic_name:*",
+    	"jsonld": {
+    		"context_file_path": "biothings_explorer/context/openfda.json"
+    	}
     }
 }
 
