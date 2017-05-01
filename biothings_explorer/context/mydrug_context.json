@@ -1,5 +1,9 @@
 {
     "@context": {
+        "drugbank.name": {
+            "@id": "oban:has_property",
+            "@type": "http://identifiers.org/drug.symbol/"
+        },
         "drugbank.targets.uniprot": {
             "@id": "oban:is_Target_of",
             "@type": "http://identifiers.org/uniprot/"
@@ -87,6 +91,10 @@
         "pubchem.cid": {
             "@id": "oban:has_property",
             "@type": "http://identifiers.org/pubchem.compound/"
+        },
+        "unii.preferred_term": {
+            "@id": "oban:has_property",
+            "@type": "http://identifiers.org/drug.symbol/" 
         }
     }
 }
