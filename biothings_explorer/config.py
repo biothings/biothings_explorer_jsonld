@@ -120,6 +120,22 @@ AVAILABLE_IDS = {
     "pharmacology_class": {
     	"uri": "http://identifiers.org/pharm_class/",
     	"example": "Nonsteroidal Anti-inflammatory Compounds [Chemical/Ingredient]"
+    },
+    "omim_term": {
+        "uri": "http://identifiers.org/omim_term/",
+        "example": "Myelokathexis"
+    },
+    "chembl_id": {
+        "uri": "http://identifiers.org/chembl.compound/",
+        "example": "CHEMBL1949675"
+    },
+    "pdb_id": {
+        "uri": "http://identifiers.org/pdb/",
+        "example": "2K03"
+    },
+    "mgi_term": {
+        "uri": "http://identifiers.org/mgi_term/",
+        "example": "endocrine/exocrine gland phenotype"
     }
 }
 
@@ -209,6 +225,14 @@ AVAILABLE_API_SOURCES = {
     	"jsonld": {
     		"context_file_path": os.path.join(BUILDIN_CONTEXT_PATH, "openfda.json")
     	}
+    },
+    "pharos": {
+        "annotate_ids": ["uniprot_id", "hgnc_gene_symbol", "ensembl_gene_id"],
+        "query_ids": ["disease_name", "omim_term", "chembl_id", "pdb_id", "mgi_term"],
+        "annotate_syntax": "http://localhost:8899/pharos/*",
+        "jsonld": {
+            "context_file_path": os.path.join(BUILDIN_CONTEXT_PATH, "pharos_context.json")
+        }
     }
 }
 
