@@ -136,6 +136,10 @@ AVAILABLE_IDS = {
     "mgi_term": {
         "uri": "http://identifiers.org/mgi_term/",
         "example": "endocrine/exocrine gland phenotype"
+    },
+    "mouse_gene_id": {
+        "uri": "http://identifiers.org/mgi/",
+        "example": 1860276
     }
 }
 
