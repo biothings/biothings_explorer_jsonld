@@ -233,6 +233,22 @@ AVAILABLE_API_SOURCES = {
         "jsonld": {
             "context_file_path": os.path.join(os.path.dirname(__file__),"context/pharos_context.json")
         }
+    },
+    "omicsdi": {
+        "annotate_ids": ["pxd_id"],
+        "query_ids": ["uniprot_id", "ensembl_protein_id"],
+        "annotate_syntax": "http://localhost:8899/omicsdb/*",
+        "jsonld": {
+            "context_file_path": os.path.join(os.path.dirname(__file__),"context/omicsdb_context.json")
+        }
+    },
+    "biolinks_interaction": {
+        "annotate_ids": ["entrez_gene_id"],
+        "query_ids": ["entrez_gene_id", "mouse_gene_id"],
+        "annotate_syntax": "http://localhost:8899/biolinks_interact/*",
+        "jsonld": {
+            "context_file_path": os.path.join(os.path.dirname(__file__),"context/biolinks_interact_context.json")
+        }
     }
 }
 
