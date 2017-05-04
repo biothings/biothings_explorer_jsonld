@@ -3,14 +3,14 @@
 ## Intro
 RESTful APIs have been widely used to distribute biological data in a programmatic manner. BioThings Explorer Python Package empowers users to explore the relationship between different biological entities through the vast amount of biological data provided by various API resources. Currently, the following API resources are available for explore:
 1. [MyGene.info API](http://mygene.info)
-⋅⋅* UCSC
-⋅⋅* CPDB
-⋅⋅* ExAC
-⋅⋅* Refseq
-⋅⋅* NetAffx
-⋅⋅* Ensembl
-⋅⋅* Entrez
-⋅⋅* Pharmgkb
+* UCSC
+* CPDB
+* ExAC
+* Refseq
+* NetAffx
+* Ensembl
+* Entrez
+* Pharmgkb
 
 2. [MyVariant.info API](http://myvariant.info)
 ⋅⋅* ExAC
