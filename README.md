@@ -3,56 +3,56 @@
 ## Intro
 RESTful APIs have been widely used to distribute biological data in a programmatic manner. BioThings Explorer Python Package empowers users to explore the relationship between different biological entities through the vast amount of biological data provided by various API resources. Currently, the following API resources are available for explore:
 1. [MyGene.info API](http://mygene.info)
-..* UCSC
-..* CPDB
-..* ExAC
-..* Refseq
-..* NetAffx
-..* Ensembl
-..* Entrez
-..* Pharmgkb
+⋅⋅* UCSC
+⋅⋅* CPDB
+⋅⋅* ExAC
+⋅⋅* Refseq
+⋅⋅* NetAffx
+⋅⋅* Ensembl
+⋅⋅* Entrez
+⋅⋅* Pharmgkb
 
 2. [MyVariant.info API](http://myvariant.info)
-..* ExAC
-..* CADD
-..* ClinVar
-..* Cosmic
-..* dbSNP
-..* dbNSFP
-..* EMV
-..* EVS
-..* GRASP
-..* SnpEff
-..* geno2mp
+⋅⋅* ExAC
+⋅⋅* CADD
+⋅⋅* ClinVar
+⋅⋅* Cosmic
+⋅⋅* dbSNP
+⋅⋅* dbNSFP
+⋅⋅* EMV
+⋅⋅* EVS
+⋅⋅* GRASP
+⋅⋅* SnpEff
+⋅⋅* geno2mp
 
 3. [Drug and Compound API](http://c.biothings.io)
-..* aelous
-..* chebi
-..* chembl
-..* drugbank
-..* ginas
-..* ndc
-..* pharmgkb
-..* pubchem
-..* sider
-..* unii
+⋅⋅* aelous
+⋅⋅* chebi
+⋅⋅* chembl
+⋅⋅* drugbank
+⋅⋅* ginas
+⋅⋅* ndc
+⋅⋅* pharmgkb
+⋅⋅* pubchem
+⋅⋅* sider
+⋅⋅* unii
 4. [Reactome API](http://reactome.org/ContentService/)
 5. [Lynx API](http://lynx.ci.uchicago.edu/webservices.html)
 6. [DGIdb API](http://dgidb.genome.wustl.edu/api)
-..* CIViC
-..* CancerCommons
-..* ChEMBL
-..* ClearityFoundationBiomarkers
-..* ClearityFoundationClinicalTrial
-..* DoCM
-..* DrugBank
-..* GuideToPharmacologyInteractions
-..* MyCancerGenomeMyCancerGenomeClinicalTrial
-..* PharmGKB
-..* TALC
-..* TEND
-..* TTD
-..* TdgClinicalTrial
+⋅⋅* CIViC
+⋅⋅* CancerCommons
+⋅⋅* ChEMBL
+⋅⋅* ClearityFoundationBiomarkers
+⋅⋅* ClearityFoundationClinicalTrial
+⋅⋅* DoCM
+⋅⋅* DrugBank
+⋅⋅* GuideToPharmacologyInteractions
+⋅⋅* MyCancerGenomeMyCancerGenomeClinicalTrial
+⋅⋅* PharmGKB
+⋅⋅* TALC
+⋅⋅* TEND
+⋅⋅* TTD
+⋅⋅* TdgClinicalTrial
 7. [openFDA API](https://open.fda.gov/api/)
 8. [Pharos API](https://pharos.nih.gov/idg/api)
 9. [monarch-initiative API](https://api.monarchinitiative.org/api/)
