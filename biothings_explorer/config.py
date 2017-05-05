@@ -140,6 +140,22 @@ AVAILABLE_IDS = {
     "mouse_gene_id": {
         "uri": "http://identifiers.org/mgi/",
         "example": 1860276
+    },
+    "civic_gene_id": {
+        "uri": "http://identifiers.org/civic_gene/",
+        "example": 6
+    },
+    "civic_variant_id": {
+        "uri": "http://identifiers.org/civic_variant/",
+        "example": 6
+    },
+    "civic_evidence_id": {
+        "uri": "http://identifiers.org/civic_evidence/",
+        "example": 6
+    },
+    "so_id": {
+        "uri": "http://identifiers.org/so/",
+        "example": "SO:0001121"
     }
 }
 
@@ -252,6 +268,38 @@ AVAILABLE_API_SOURCES = {
         "annotate_syntax": "http://localhost:8899/biolinks_interact/*",
         "jsonld": {
             "context_file_path": os.path.join(os.path.dirname(__file__),"context/biolinks_interact_context.json")
+        }
+    },
+    "civic_general": {
+        "annotate_ids": ["hgnc_gene_symbol"],
+        "query_ids": ["civic_gene_id", "civic_variant_id", "disease_name", "drug_symbol", "entrez_gene_id"],
+        "annotate_syntax": "https://civic.genome.wustl.edu/api/variants/typeahead_results?limit=20&query=*",
+        "jsonld": {
+            "context_file_path": os.path.join(os.path.dirname(__file__), "context/civic_general_context.json")
+        }
+    },
+    "civic_gene": {
+        "annotate_ids": ["civic_gene_id"],
+        "query_ids": ["civic_variant_id", "civic_variant_group_id", "civic_source_id", "hgnc_gene_symbol", "entrez_gene_id"],
+        "annotate_syntax": "https://civic.genome.wustl.edu/api/genes/*",
+        "jsonld": {
+            "context_file_path": os.path.join(os.path.dirname(__file__), "context/civic_gene_context.json")
+        }
+    },
+    "civic_variant": {
+        "annotate_ids": ["civic_variant_id"],
+        "query_ids": ["hgnc_gene_symbol", "entrez_gene_id", "civic_gene_id", "so_id", "civic_evidience_id", "disease_name", "diseaseontology_id", "drug_symbol"],
+        "annotate_syntax": "https://civic.genome.wustl.edu/api/variants/*",
+        "jsonld": {
+            "context_file_path": os.path.join(os.path.dirname(__file__), "context/civic_variant_context.json")
+        }
+    },
+    "civic_evidence": {
+        "annotate_ids": ["civic_evidence_id"],
+        "query_ids": ["hgnc_gene_symbol", "disease_name", "drug_symbol", "pubmed_id", "civic_variant_id"],
+        "annotate_syntax": "https://civic.genome.wustl.edu/api/evidence_items/*",
+        "jsonld": {
+            "context_file_path": os.path.join(os.path.dirname(__file__), "context/civic_evidence_context.json")
         }
     }
 }
