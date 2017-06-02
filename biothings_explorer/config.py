@@ -185,7 +185,7 @@ AVAILABLE_API_SOURCES = {
             "context_file_path": os.path.join(os.path.dirname(__file__),"context/myvariant_context.json")
         }
     },
-    "mydrug.info": {
+    "mychem.info": {
         "annotate_ids": ["drugbank_id"],
         "query_ids": ["dbsnp_id", "pubchem_id", "drugbank_id", "rxcui", "drug_symbol", "pubmed_id", "hgnc_gene_symbol", "uniprot_id", "clinicaltrial_id"],
         "annotate_syntax": "http://c.biothings.io/v1/drug/*",
@@ -308,7 +308,7 @@ AVAILABLE_API_SOURCES = {
     }
 }
 
-CLIENT_LIST = {"mygene.info", "myvariant.info", "mydrug.info"}
+CLIENT_LIST = {"mygene.info", "myvariant.info", "mychem.info"}
 
 def add_interaction_resources():
     url = 'http://reactome.org/ContentService/interactors/psicquic/resources'
