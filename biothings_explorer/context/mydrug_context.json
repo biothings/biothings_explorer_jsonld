@@ -95,6 +95,18 @@
         "unii.preferred_term": {
             "@id": "oban:has_property",
             "@type": "http://identifiers.org/drug.symbol/" 
+        },
+        "unii.rxcui": {
+            "@id": "oban:has_property",
+            "@type": "http://identifiers.org/rxcui/"
+        },
+        "aeolus.drug_code": {
+            "@id": "oban:has_property",
+            "@type": "http://identifiers.org/rxcui/"
+        },
+        "ginas.xrefs.RXCUI": {
+            "@id": "oban:has_property",
+            "@type": "http://identifiers.org/rxcui/"
         }
     }
 }
