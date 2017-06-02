@@ -43,7 +43,7 @@ def compose_query_parameter_from_uri(uri, value, api, relation=None):
     print(field_name_list)
     string = ":" + value + " OR "
     if len(field_name_list) > 1:
-        return string.join(field_name_list)
+        return (string.join(field_name_list) + ":" + value)
     else:
         return (field_name_list[0] + ':' + value)
 
