@@ -156,6 +156,10 @@ AVAILABLE_IDS = {
     "so_id": {
         "uri": "http://identifiers.org/so/",
         "example": "SO:0001121"
+    },
+    "rxcui": {
+        "uri": "http://identifiers.org/rxcui/",
+        "example": '603952'
     }
 }
 
@@ -183,7 +187,7 @@ AVAILABLE_API_SOURCES = {
     },
     "mydrug.info": {
         "annotate_ids": ["drugbank_id"],
-        "query_ids": ["dbsnp_id", "pubchem_id", "drugbank_id", "drug_symbol", "pubmed_id", "hgnc_gene_symbol", "uniprot_id", "clinicaltrial_id"],
+        "query_ids": ["dbsnp_id", "pubchem_id", "drugbank_id", "rxcui", "drug_symbol", "pubmed_id", "hgnc_gene_symbol", "uniprot_id", "clinicaltrial_id"],
         "annotate_syntax": "http://c.biothings.io/v1/drug/*",
         "query_syntax": "http://c.biothings.io/v1/query?q=*",
         "jsonld": {
