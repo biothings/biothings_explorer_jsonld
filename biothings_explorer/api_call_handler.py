@@ -3,6 +3,7 @@ import requests
 
 from api_registry_parser import RegistryParser
 from jsonld_processor import json2nquds
+from utils import int2str
 
 class ApiCallHandler:
     def __init__(self):
@@ -135,7 +136,7 @@ class ApiCallHandler:
             print('This API call returns no results. The URI given is {}, the endpoint given is {}'.format(uri_value_dict, endpoint_name))
             return
 
-    def preprocess_json_doc(self, json_doc, ednpoint_name):
+    def preprocess_json_doc(self, json_doc, endpoint_name):
         """
         Preprocessing json doc, including following steps:
         1) Convert all integers in the json_doc into string
@@ -170,10 +171,9 @@ class ApiCallHandler:
         output_uri: (str)
             the output type to extract
         predicate: (str)
-            the relationship between input and output      
+            the relationship between input and output
 
         """
-        json_doc = preprocess_json_doc(json_doc, endpoint_name)
         # get the output_type of the output, could be 'entity' or 'object'
         output_type = self.bioentity_info[output_uri]['type']
         # if output_type is entity, use JSON-LD to extract the output
@@ -181,19 +181,19 @@ class ApiCallHandler:
             jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
             outputs = json2nquds(json_doc, jsonld_context, output_uri, predicate)
             if outputs:
-                return (outputs,output_uri)
+                return (outputs, output_uri)
             else:
                 print("No output could be found from the given json_doc and output type!")
                 return
         # if output_type is object, use OpenAPI specs to extract the output
         else:
-            response = self.endpoint_info[endpoint]['get']['responses']['200']['x-responseValueType']
+            response = self.endpoint_info[endpoint_name]['get']['responses']['200']['x-responseValueType']
             # get the dot path for extracting output
             for _response in response:
                 if _response['valueType'] == output_uri:
                     output_path = _response['path']
                 else:
-                    print("Could not find the path to extract output in OpenAPI specs in endpoint: {}".format(endpoint))
+                    print("Could not find the path to extract output in OpenAPI specs in endpoint: {}".format(endpoint_name))
                     return
             # extract output
             outputs_command = 'json_doc'
@@ -205,3 +205,35 @@ class ApiCallHandler:
                 print("Could not extract the output from the path given {}".format(outputs_command))
                 return
             return (outputs, output_uri)
+
+    def input2output(self, input_type, input_value, endpoint_name, output_type, predicate=None, additional_parameters={}):
+        """
+        This is the main function of the class
+        Given input, endpoint, output, etc, perform the following steps:
+        1) Preprocess input based on endpoint type
+        2) Make API calls
+        3) Preprocess the JSON doc from step 2
+        4) Extract the output based on output_type and predicate
+        """
+        final_results = []
+        # preprocess the input
+        processed_input = self.preprocessing_input(input_value, endpoint_name)
+        # retrieve json doc
+        for _input_value in processed_input:
+            uri_value = {input_type: _input_value}
+            if additional_parameters:
+                uri_value.update(additional_parameters)
+            api_call_response = self.call_api(uri_value, endpoint_name)
+            if api_call_response:
+                json_doc = self.preprocess_json_doc(api_call_response.json(), endpoint_name)
+            else:
+                print('This API call returns no response. Endpoint name: {}, Input value type: {}. Input value: {}'
+                      .format(endpoint_name, input_type, input_value))
+            # extract the output based on output_type & predicate
+            output_info = self.extract_output(json_doc, endpoint_name, output_type, predicate=predicate)
+            if output_info:
+                final_results.append({'input': (_input_value, input_type), 'output': output_info})
+            else:
+                print('The API call returns response. But no appropriate output could be extracted. Output type given is : {}. Predicate given is: {}'
+                      .format(output_type, predicate))
+        return final_results
