@@ -2,7 +2,7 @@ import pkg_resources
 import os.path
 import requests
 
-BUILDIN_CONTEXT_PATH = pkg_resources.resource_filename('biothings_explorer', 'context')
+BUILDIN_CONTEXT_PATH = pkg_resources.resource_filename('biothings_explorer', 'openapi_specs')
 
 FILE_PATHS = {
     "registry_repo": {
