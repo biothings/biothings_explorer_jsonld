@@ -2,7 +2,7 @@ import json
 import requests
 
 from api_registry_parser import RegistryParser
-from jsonld_processor import json2nquds
+from jsonld_processor import json2nquads
 from utils import int2str
 
 class ApiCallHandler:
@@ -179,7 +179,7 @@ class ApiCallHandler:
         # if output_type is entity, use JSON-LD to extract the output
         if output_type == 'Entity':
             jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
-            outputs = json2nquds(json_doc, jsonld_context, output_uri, predicate)
+            outputs = json2nquads(json_doc, jsonld_context, output_uri, predicate)
             if outputs:
                 return (outputs, output_uri)
             else:
