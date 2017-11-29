@@ -55,8 +55,6 @@ def fetchvalue(nquads, object_uri, predicate=None):
                 results.append((_nquad['object']['value'].split(object_uri)[1], _nquad['predicate']['value'].split('/')[-1]))
             elif not predicate and object_uri in _nquad['object']['value']:
                 results.append((_nquad['object']['value'].split(object_uri)[1], _nquad['predicate']['value'].split('/')[-1]))
-            else:
-                print('The object uri {} and predicate {} pair could not be found in nuqads'.format(object_uri, predicate))
     elif nquads:
         print('This is a invalid nquads, missing "@default"!!!')
     else:
