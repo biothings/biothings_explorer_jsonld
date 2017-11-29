@@ -1,5 +1,6 @@
 from urllib.parse import urljoin
 import os.path
+from collections import defaultdict
 
 from utils import readFile
 from config import FILE_PATHS
@@ -102,7 +103,7 @@ class RegistryParser:
         # parse endpoint info
         for _name, _info in data['paths'].items():
             endpoint_name = data['servers'][0]['url'] + _name
-            parsed_result['endpoints'] = {endpoint_name: _info}
+            parsed_result['endpoints'].update({endpoint_name: _info})
             _output = [_item['valueType'] for _item in _info['get']['responses']['200']['x-responseValueType']]
             # extract relationship info from the json-ld context file
             relation = {}
@@ -111,7 +112,7 @@ class RegistryParser:
                     jsonld_path = urljoin(self.registry_path, _info['get']['responses']['200']['x-JSONLDContext'])
                 elif self.readmethod == 'filepath':
                     jsonld_path = os.path.join(self.registry_path, _info['get']['responses']['200']['x-JSONLDContext'])
-                relation = find_base(readFile(jsonld_path))
+                relation = find_base(readFile(jsonld_path), relation=defaultdict(set))
             for _op in _output:
                 if _op not in relation:
                     relation[_op] = ['ont:is_related_to']
