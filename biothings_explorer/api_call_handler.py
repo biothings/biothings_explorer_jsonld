@@ -1,3 +1,6 @@
+import json
+import requests
+
 from api_registry_parser import RegistryParser
 
 class ApiCallHandler:
@@ -11,7 +14,6 @@ class ApiCallHandler:
         """
         self.registry = RegistryParser(readmethod='filepath', initialize=True)
 
-
     def check_if_exists_multiple_params(self, endpoint_name):
         """
         Some API endpoints takes more than one required input
@@ -19,7 +21,7 @@ class ApiCallHandler:
         and 'geneid' as two required input parameters
         Thus, this function checks whether there exists multiple required parameters
         It returns True when there exists >1 parameters, False if only 1 parameter is required
-        
+
         Params
         ======
         endpoint_name: (str)
@@ -30,7 +32,6 @@ class ApiCallHandler:
             return True
         else:
             return False
-
 
     def api_endpoint_locator(self, _input, _output):
         """
@@ -53,15 +54,26 @@ class ApiCallHandler:
                 endpoint_list.append(_endpoint)
         # check if endpoint is found
         if not endpoint_list:
-            print('Could not find an API endpoint which takes the desired input: {} and return the desired output: {}'.format(input, output))
+            print('Could not find an API endpoint which takes the desired input: {} and return the desired output: {}'.format(_input, _output))
         return endpoint_list
 
-
-    def call_api(self, uri_value, endpoint_name):
+    def call_api(self, uri_value_dict, endpoint_name):
         """
-        construct requests params/data, based on input type and value
-        only handle 'in' value which is body or query
-        uri_value is a dict constituting uri:value pairs
+        make api calls
+        1) If the input_type is in endpoint path, then replace the input_type name in endpoint with the input value
+        2) If the input_type is in query
+           a) If there exists a requestTemplate, then follow the template to constrcut api call
+           b) If no template, construct a new {para: value} pair
+
+        TODO: currently this function only handles 'get' method
+              Later on, we should extend it to handle 'post' method for batch queries
+
+        ======
+        uri_value_dict: (dict)
+            Dictionary with URI representing the input type as key, and input value as value
+        endpoint_name: (str)
+            The endpoint to make api call
+
         """
         results = {}
         # temp holder for method, should extend this function to handle 'post'
@@ -69,7 +81,7 @@ class ApiCallHandler:
         for _para in self.registry.endpoint_info[endpoint_name][method]['parameters']:
             # handle cases where input value is part of the url
             if _para['in'] == 'path':
-                endpoint_name = endpoint_name.replace('{' + _para['name'] + '}', str(uri_value[_para['x-valueType'][0]]))
+                endpoint_name = endpoint_name.replace('{' + _para['name'] + '}', str(uri_value_dict[_para['x-valueType'][0]]))
             # handle cases for query
             else:
                 # check whether the parameter is required
@@ -78,15 +90,13 @@ class ApiCallHandler:
                     if 'x-requestTemplate' in _para:
                         for _template in _para['x-requestTemplate']:
                             if _template['valueType'] == 'default':
-                                results[_para['name']] = _template['template'].replace('{{input}}', json.dumps(list(uri_value.values())[0]))
-                            elif _template['valueType'] in uri_value.keys():
-                                results[_para['name']] = _template['template'].replace('{{input}}', json.dumps(uri_value[_template['valueType']]))
+                                results[_para['name']] = _template['template'].replace('{{input}}', json.dumps(list(uri_value_dict.values())[0]))
+                            elif _template['valueType'] in uri_value_dict.keys():
+                                results[_para['name']] = _template['template'].replace('{{input}}', json.dumps(uri_value_dict[_template['valueType']]))
                     else:
-                        results[_para['name']] = value
-        if requests.get(endpoint_name, params=results).status_code -- 200:
+                        results[_para['name']] = list(uri_value_dict.values())[0]
+        if requests.get(endpoint_name, params=results).status_code == 200:
             return requests.get(endpoint_name, params=results)
         else:
-            print('This API call returns no results. The URI given is {}, the endpoint given is {}'.format(uri_value, endpoint_name))
+            print('This API call returns no results. The URI given is {}, the endpoint given is {}'.format(uri_value_dict, endpoint_name))
             return
-
-
