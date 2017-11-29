@@ -113,6 +113,7 @@ class RegistryParser:
                 elif self.readmethod == 'filepath':
                     jsonld_path = os.path.join(self.registry_path, _info['get']['responses']['200']['x-JSONLDContext'])
                 relation = find_base(readFile(jsonld_path), relation=defaultdict(set))
+                parsed_result['endpoints'][endpoint_name].update({'jsonld_context': jsonld_path})
             for _op in _output:
                 if _op not in relation:
                     relation[_op] = ['ont:is_related_to']
