@@ -57,13 +57,12 @@ class ApiCallHandler:
             print('Could not find an API endpoint which takes the desired input: {} and return the desired output: {}'.format(_input, _output))
         return endpoint_list
 
-
     def preprocessing_input(self, value, endpoint_name):
         '''
         Based on endpoint info, handle the input given
         1) If the parameter type for the endpoint is 'array', treat the whole input as a list
         2) If the parameter is string, treat each item individually
-        
+
         params
         ======
         value: (str or list)
@@ -77,7 +76,7 @@ class ApiCallHandler:
             if type(value) == list:
                 return [value]
             else:
-                print("Wrong input type error: {} takes list as input, while {} type input is given by the user".format(endpoint, type(value)))
+                print("Wrong input type error: {} takes list as input, while {} type input is given by the user".format(endpoint_name, type(value)))
         # if the endpoint takes string as input, turn input value into [string1, string2, string3]
         else:
             if type(value) == list:
@@ -104,7 +103,7 @@ class ApiCallHandler:
             The endpoint to make api call
 
         """
-        if type(uri_value_dict)!= dict:
+        if type(uri_value_dict) != dict:
             print('The parameter uri_value_dict should be of type dict!! Your input is of type {}!'.format(type(uri_value_dict)))
             return
         if endpoint_name not in self.registry.endpoint_info:
