@@ -6,9 +6,24 @@ from jsonld_processor import find_base
 
 
 class RegistryHandler:
-    def __init__(self, readmethod):
+
+    def __init__(self, readmethod, initialize=False):
+        """
+        Parse the openapi files and JSON-LD context files located at
+        https://github.com/NCATS-Tangerine/translator-api-registry
+        
+        Params
+        ======
+        readmethod: (str)
+            http -- read from url
+            filepath -- read from local
+        initialize: (boolean)
+            whether to read in all files when calling the class
+        """
         self.readmethod = readmethod
         self.bioentity_info = {}
+        self.api_info = {}
+        self.endpoint_info = {}
         self.openapi_spec_path_list = []
         if readmethod == 'http':
             self.registry_path = FILE_PATHS['registry_repo']['url']
@@ -22,6 +37,18 @@ class RegistryHandler:
             print('Invalid readmethod {}!!!. Please choose either http or filepath'.format(readmethod))
         else:
             print('Please specify a readmethod. It could be either http or filepath!')
+        if initialize:
+            # read in all biological entity info
+            self.bioentity_info = self.read_id_mapping_file()
+            # read in api list
+            self.openapi_spec_path_list = self.read_api_list_file()
+            # read openapi file for each api
+            for _file_path in self.openapi_spec_path_list:
+                parsed_result = self.parse_openapi_file(_file_path)
+                if 'api' in parsed_result:
+                    self.api_info.update(parsed_result['api'])
+                if 'endpoints' in parsed_result:
+                    self.endpoint_info.update(parsed_result['endpoints'])
 
     def read_id_mapping_file(self):
         """
@@ -32,8 +59,9 @@ class RegistryHandler:
         data = readFile(self.id_mapping_path)
         # turn data frame into a dictionary and store in bioentity_info
         for index, row in data.iterrows():
-            self.bioentity_info[row['URI']] = {'registry_identifier': row[2], 'alternative_names': row[3], 'description': row[4],
-                                               'identifier_pattern': row[5], 'preferred_name': row[1], 'type': row[6]}
+            self.bioentity_info[row['URI']] = {'registry_identifier': row['Registry identifier'], 'alternative_names': row['Alternative name(s)'],
+                                               'description': row['Description'], 'identifier_pattern': row['Identifier pattern'],
+                                               'preferred_name': row['Recommended name'], 'type': row['Type']}
         return self.bioentity_info
 
     def read_api_list_file(self):
@@ -56,7 +84,12 @@ class RegistryHandler:
         """
         read in the API openapi yaml file
         and parse it into a dictionary
-        containing api and endpoint info separatelyo
+        containing api and endpoint info separately
+
+        Params
+        ======
+        file_name: (str)
+            The path to the (individual) openapi file
         """
         data = readFile(file_name)
         if not data:
@@ -73,7 +106,10 @@ class RegistryHandler:
             # extract relationship info from the json-ld context file
             relation = {}
             if 'x-JSONLDContext' in _info['get']['responses']['200']:
-                jsonld_path = _info['get']['responses']['200']['x-JSONLDContext']
+                if self.readmethod == 'http':
+                    jsonld_path = urljoin(self.registry_path, _info['get']['responses']['200']['x-JSONLDContext'])
+                elif self.readmethod == 'filepath':
+                    jsonld_path = os.path.join(self.registry_path, _info['get']['responses']['200']['x-JSONLDContext'])
                 relation = find_base(readFile(jsonld_path))
             for _op in _output:
                 if _op not in relation:
