@@ -175,7 +175,11 @@ class ApiCallHandler:
 
         """
         # get the output_type of the output, could be 'entity' or 'object'
-        output_type = self.registry.bioentity_info[output_uri]['type']
+        if output_uri in self.registry.bioentity_info:
+            output_type = self.registry.bioentity_info[output_uri]['type']
+        else:
+            print("The output_uri specified {} could not be found in the registry!".format(output_uri))
+            return
         # if output_type is entity, use JSON-LD to extract the output
         if output_type == 'Entity':
             jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
