@@ -157,19 +157,33 @@ class ApiCallHandler:
     def extract_output(self, json_doc, endpoint_name, output_uri, predicate):
         """
         extract output from json_doc
-        1) 
+        1) determine the output type
+        2) If output_type is entity, use jsonld to extract the output
+        3) if output_type is object, use the path from openapi to extract the output
+
+        params
+        ======
+        json_doc: (dict)
+            preprocessed json_doc to extract output
+        endpoint_name: (str)
+            used to find path
+        output_uri: (str)
+            the output type to extract
+        predicate: (str)
+            the relationship between input and output      
 
         """
         json_doc = preprocess_json_doc(json_doc, endpoint_name)
         # get the output_type of the output, could be 'entity' or 'object'
-        output_type = self.bioentity_info[output]['type']
+        output_type = self.bioentity_info[output_uri]['type']
         # if output_type is entity, use JSON-LD to extract the output
         if output_type == 'Entity':
             jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
             outputs = json2nquds(json_doc, jsonld_context, output_uri, predicate)
             if outputs:
-                return (outputs,output)
+                return (outputs,output_uri)
             else:
+                print("No output could be found from the given json_doc and output type!")
                 return
         # if output_type is object, use OpenAPI specs to extract the output
         else:
@@ -180,9 +194,14 @@ class ApiCallHandler:
                     output_path = _response['path']
                 else:
                     print("Could not find the path to extract output in OpenAPI specs in endpoint: {}".format(endpoint))
+                    return
             # extract output
             outputs_command = 'json_doc'
             for _item in output_path.split('.'):
                 outputs_command += ('["' + _item + '"]')
-            outputs = eval(outputs_command)
-            return (outputs, output)
+            try:
+                outputs = eval(outputs_command)
+            except:
+                print("Could not extract the output from the path given {}".format(outputs_command))
+                return
+            return (outputs, output_uri)
