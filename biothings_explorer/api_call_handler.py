@@ -75,6 +75,12 @@ class ApiCallHandler:
             The endpoint to make api call
 
         """
+        if type(uri_value_dict)!= dict:
+            print('The parameter uri_value_dict should be of type dict!! Your input is of type {}!'.format(type(uri_value_dict)))
+            return
+        if endpoint_name not in self.registry.endpoint_info:
+            print('The endpoint you specify ({}) is not in the registry'.format(endpoint_name))
+            return
         results = {}
         # temp holder for method, should extend this function to handle 'post'
         method = 'get'
