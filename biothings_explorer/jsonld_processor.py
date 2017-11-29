@@ -4,6 +4,8 @@ import re
 import requests
 from collections import defaultdict
 
+from utils import readFile
+
 
 t = jsonld.JsonLdProcessor()
 
@@ -43,7 +45,7 @@ def fetchvalue(nquads, object_uri, predicate=None):
     object_uri: (str)
         URI subject
     predicate:
-        NQUADS predicate
+        NQUADS predicate. If None is specified, return all objects matching the subject
     """
     results = []
     # check if it's a valid nquads
@@ -53,6 +55,8 @@ def fetchvalue(nquads, object_uri, predicate=None):
                 results.append((_nquad['object']['value'].split(object_uri)[1], _nquad['predicate']['value'].split('/')[-1]))
             elif not predicate and object_uri in _nquad['object']['value']:
                 results.append((_nquad['object']['value'].split(object_uri)[1], _nquad['predicate']['value'].split('/')[-1]))
+            else:
+                print('The object uri {} and predicate {} pair could not be found in nuqads'.format(object_uri, predicate))
     elif nquads:
         print('This is a invalid nquads, missing "@default"!!!')
     else:
@@ -61,7 +65,7 @@ def fetchvalue(nquads, object_uri, predicate=None):
     if results:
         return list(set(results))
     else:
-        return [None]
+        return
 
 def find_base(d, relation=defaultdict(set)):
     """
@@ -86,7 +90,7 @@ def find_base(d, relation=defaultdict(set)):
             find_base(v, relation=relation)
     return relation
 
-def json2nquads(json_doc, context_file):
+def json2nquads(json_doc, context_file_path, output, predicate=None):
     """
     Given a JSON document, perform the following actions
     1) Find the json-ld context file based on endpoint_name
@@ -99,7 +103,12 @@ def json2nquads(json_doc, context_file):
         JSON document fetched from API calls
     endpoint_name: (str)
         the endpoint which the JSON doc comes from
+    output: (str)
+        URI subject
+    predicate:
+        NQUADS predicate, default is None
     """
+    context_file = readFile(context_file_path)
     json_doc.update(context_file)
     nquads = jsonld2nquads(json_doc)
     outputs = list(set(fetchvalue(nquads, output, predicate=predicate)))
