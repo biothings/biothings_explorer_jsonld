@@ -7,16 +7,13 @@ from collections import defaultdict
 
 t = jsonld.JsonLdProcessor()
 
-'''
-Input: jsonld document
-Output: nquads format of the jsonld doc
-'''
+
 def jsonld2nquads(jsonld_doc):
     """
     Given a JSON-LD annotated document,
     Fetch it's corresponding NQUADs file from JSON-LD playground
     'http://jsonld.biothings.io/?action=nquads'
-    
+
     TODO: Currently, PyLD hasn't been updated to match JSON-LD v 1.1
     So we are using the JSON-LD playground API, which is built upon
     JSON-LD ruby client for 1.1 version. When PyLD has been updated to 
@@ -34,9 +31,6 @@ def jsonld2nquads(jsonld_doc):
         nquads = re.sub('Parsed .*second.\n', '', nquads.json()['output'])
         return t.parse_nquads(nquads)
 
-'''
-given a predicate and object, return the value from nquads
-'''
 def fetchvalue(nquads, object_uri, predicate=None):
     """
     Given a NQUADS together with (URI/subject, predicate) pair
@@ -91,3 +85,22 @@ def find_base(d, relation=defaultdict(set)):
         elif isinstance(v, dict):
             find_base(v, relation=relation)
     return relation
+
+def json2nquads(json_doc, context_file):
+    """
+    Given a JSON document, perform the following actions
+    1) Find the json-ld context file based on endpoint_name
+    2) Add JSON-LD context file to JSON doc
+    3) Convert the JSON-LD doc into N-quads format
+
+    Params
+    ======
+    json_doc: (dict)
+        JSON document fetched from API calls
+    endpoint_name: (str)
+        the endpoint which the JSON doc comes from
+    """
+    json_doc.update(context_file)
+    nquads = jsonld2nquads(json_doc)
+    outputs = list(set(fetchvalue(nquads, output, predicate=predicate)))
+    return outputs
