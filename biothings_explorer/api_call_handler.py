@@ -74,7 +74,7 @@ class ApiCallHandler:
 
         '''
         # if the endpoint takes array as input, turn input value into [list]
-        if self.endpoint_info[endpoint_name]['get']['parameters'][0]['schema']['type'] == 'array':
+        if self.registry.endpoint_info[endpoint_name]['get']['parameters'][0]['schema']['type'] == 'array':
             if type(value) == list:
                 return [value]
             else:
@@ -175,7 +175,7 @@ class ApiCallHandler:
 
         """
         # get the output_type of the output, could be 'entity' or 'object'
-        output_type = self.bioentity_info[output_uri]['type']
+        output_type = self.registry.bioentity_info[output_uri]['type']
         # if output_type is entity, use JSON-LD to extract the output
         if output_type == 'Entity':
             jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
