@@ -1,6 +1,7 @@
 from urllib.parse import urljoin
 import os.path
-from utils import readFile
+
+from utils import readFileß
 from config import FILE_PATHS
 from jsonld_processor import find_base
 
