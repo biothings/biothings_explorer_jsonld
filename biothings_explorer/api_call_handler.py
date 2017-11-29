@@ -2,6 +2,7 @@ import json
 import requests
 
 from api_registry_parser import RegistryParser
+from jsonld_processor import json2nquds
 
 class ApiCallHandler:
     def __init__(self):
@@ -133,3 +134,55 @@ class ApiCallHandler:
         else:
             print('This API call returns no results. The URI given is {}, the endpoint given is {}'.format(uri_value_dict, endpoint_name))
             return
+
+    def preprocess_json_doc(self, json_doc, ednpoint_name):
+        """
+        Preprocessing json doc, including following steps:
+        1) Convert all integers in the json_doc into string
+        2) If the endpoint is MyVariant, convert all ":" into "-"
+            because jsonld could not handle ':'
+
+        TODO: should work with jsonld folks to support ":" as part of the value
+        """
+        int2str(json_doc)
+        if endpoint_name.startswith('http://myvariant.info/'):
+            if "_id" in json_doc:
+                json_doc["_id"] = json_doc["_id"].replace(':', '-')
+            elif "hits" in json_doc:
+                for _doc in json_doc["hits"]:
+                    if "_id" in _doc:
+                        _doc['_id'] = _doc['_id'].replace(":", "-")
+        return json_doc
+
+    def extract_output(self, json_doc, endpoint_name, output_uri, predicate):
+        """
+        extract output from json_doc
+        1) 
+
+        """
+        json_doc = preprocess_json_doc(json_doc, endpoint_name)
+        # get the output_type of the output, could be 'entity' or 'object'
+        output_type = self.bioentity_info[output]['type']
+        # if output_type is entity, use JSON-LD to extract the output
+        if output_type == 'Entity':
+            jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
+            outputs = json2nquds(json_doc, jsonld_context, output_uri, predicate)
+            if outputs:
+                return (outputs,output)
+            else:
+                return
+        # if output_type is object, use OpenAPI specs to extract the output
+        else:
+            response = self.endpoint_info[endpoint]['get']['responses']['200']['x-responseValueType']
+            # get the dot path for extracting output
+            for _response in response:
+                if _response['valueType'] == output_uri:
+                    output_path = _response['path']
+                else:
+                    print("Could not find the path to extract output in OpenAPI specs in endpoint: {}".format(endpoint))
+            # extract output
+            outputs_command = 'json_doc'
+            for _item in output_path.split('.'):
+                outputs_command += ('["' + _item + '"]')
+            outputs = eval(outputs_command)
+            return (outputs, output)
