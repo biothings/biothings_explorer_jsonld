@@ -6,7 +6,7 @@ from config import FILE_PATHS
 from jsonld_processor import find_base
 
 
-class RegistryHandler:
+class RegistryParser:
 
     def __init__(self, readmethod, initialize=False):
         """
