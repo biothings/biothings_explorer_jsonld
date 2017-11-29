@@ -57,6 +57,34 @@ class ApiCallHandler:
             print('Could not find an API endpoint which takes the desired input: {} and return the desired output: {}'.format(_input, _output))
         return endpoint_list
 
+
+    def preprocessing_input(self, value, endpoint_name):
+        '''
+        Based on endpoint info, handle the input given
+        1) If the parameter type for the endpoint is 'array', treat the whole input as a list
+        2) If the parameter is string, treat each item individually
+        
+        params
+        ======
+        value: (str or list)
+            input_value for endpoint
+        endpoint_name: (str)
+            The endpoint to make api call
+
+        '''
+        # if the endpoint takes array as input, turn input value into [list]
+        if self.endpoint_info[endpoint_name]['get']['parameters'][0]['schema']['type'] == 'array':
+            if type(value) == list:
+                return [value]
+            else:
+                print("Wrong input type error: {} takes list as input, while {} type input is given by the user".format(endpoint, type(value)))
+        # if the endpoint takes string as input, turn input value into [string1, string2, string3]
+        else:
+            if type(value) == list:
+                return value
+            else:
+                return [value]
+
     def call_api(self, uri_value_dict, endpoint_name):
         """
         make api calls
@@ -68,6 +96,7 @@ class ApiCallHandler:
         TODO: currently this function only handles 'get' method
               Later on, we should extend it to handle 'post' method for batch queries
 
+        params
         ======
         uri_value_dict: (dict)
             Dictionary with URI representing the input type as key, and input value as value
@@ -82,7 +111,6 @@ class ApiCallHandler:
             print('The endpoint you specify ({}) is not in the registry'.format(endpoint_name))
             return
         results = {}
-        # temp holder for method, should extend this function to handle 'post'
         method = 'get'
         for _para in self.registry.endpoint_info[endpoint_name][method]['parameters']:
             # handle cases where input value is part of the url
