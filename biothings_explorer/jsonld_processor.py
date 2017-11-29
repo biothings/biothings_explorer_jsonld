@@ -16,6 +16,11 @@ def jsonld2nquads(jsonld_doc):
     Given a JSON-LD annotated document,
     Fetch it's corresponding NQUADs file from JSON-LD playground
     'http://jsonld.biothings.io/?action=nquads'
+    
+    TODO: Currently, PyLD hasn't been updated to match JSON-LD v 1.1
+    So we are using the JSON-LD playground API, which is built upon
+    JSON-LD ruby client for 1.1 version. When PyLD has been updated to 
+    match 1.1, we should switch back to PyLD.
 
     Params
     ======
