@@ -13,7 +13,7 @@ class RegistryParser:
         """
         Parse the openapi files and JSON-LD context files located at
         https://github.com/NCATS-Tangerine/translator-api-registry
-        
+
         Params
         ======
         readmethod: (str)
