@@ -11,6 +11,7 @@ class ApiCallHandler:
         """
         self.registry = RegistryParser(readmethod='filepath', initialize=True)
 
+
     def check_if_exists_multiple_params(self, endpoint_name):
         """
         Some API endpoints takes more than one required input
@@ -29,6 +30,31 @@ class ApiCallHandler:
             return True
         else:
             return False
+
+
+    def api_endpoint_locator(self, _input, _output):
+        """
+        This function fullfill task 1 of the class ApiCallHandler
+        Given an input/output pair, return the endpoint(s) which could do the transformation
+
+        Params
+        ======
+        input: (str)
+            In the form of URI. Should be part of an endpoint's x-valueType
+        output: (str)
+            In the form of URI. Should be part of an endpoint's x-responeType
+
+        """
+        endpoint_list = []
+        # loop through each API endpoint, compare its input/output with the input/output given by the user
+        # if hits, append to the list
+        for _endpoint, _info in self.endpoint_info.items():
+            if _input in _info['input'] and _output in _info['output']:
+                endpoint_list.append(_endpoint)
+        # check if endpoint is found
+        if not endpoint_list:
+            print('Could not find an API endpoint which takes the desired input: {} and return the desired output: {}'.format(input, output))
+        return endpoint_list
 
 
     def call_api(self, uri_value, endpoint_name):
@@ -62,3 +88,5 @@ class ApiCallHandler:
         else:
             print('This API call returns no results. The URI given is {}, the endpoint given is {}'.format(uri_value, endpoint_name))
             return
+
+
