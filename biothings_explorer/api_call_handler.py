@@ -49,7 +49,7 @@ class ApiCallHandler:
         endpoint_list = []
         # loop through each API endpoint, compare its input/output with the input/output given by the user
         # if hits, append to the list
-        for _endpoint, _info in self.endpoint_info.items():
+        for _endpoint, _info in self.registry.endpoint_info.items():
             if _input in _info['input'] and _output in _info['output']:
                 endpoint_list.append(_endpoint)
         # check if endpoint is found
