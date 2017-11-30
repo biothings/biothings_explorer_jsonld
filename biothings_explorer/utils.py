@@ -68,3 +68,19 @@ def readFile(file_path):
             return json.loads(data)
     else:
         print("readFile function could not handle file format other than csv, yml or json!")
+
+def str2list(_input):
+    """
+    This function takes an input, and determine its type
+    if the type is list, return the input without modification
+    if the ytpe is string, turn it into list and return
+
+    Parmas
+    ======
+    _input: (str or list)
+        input to the modification
+    """
+    if type(_input) == list:
+        return _input
+    else:
+        return [_input]
