@@ -2,7 +2,7 @@ import tabulate
 import networkx as nx
 
 from api_call_handler import ApiCallHandler
-from visjupyter_hepler import find_edge_label
+from visjupyter_helper import find_edge_label
 
 class BioThingsExplorer:
     def __init__(self, loadroadmap=True):
@@ -71,7 +71,8 @@ class BioThingsExplorer:
         if not self.api_map.nodes():
             print('Please call construct_api_road_map function first!')
             return
-        return draw_graph(self.api_map, graph_id=self.graph_id = self.graph_id + 1)
+        self.graph_id += 1
+        return draw_graph(self.api_map, graph_id=self.graph_id)
 
     def path_conversion(self, pathList, relation_filter=None):
         """
@@ -162,7 +163,7 @@ class BioThingsExplorer:
                 final_results.append(_path)
             else:
                 continue
-        if !dictformat
+        if not dictformat:
             return final_results
         else:
             dict_results = [self.path_conversion(_path, relation_filter) for _path in final_results]
