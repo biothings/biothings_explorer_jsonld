@@ -4,7 +4,7 @@ import re
 import requests
 from collections import defaultdict
 
-from utils import readFile
+from .utils import readFile
 
 
 t = jsonld.JsonLdProcessor()
