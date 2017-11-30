@@ -1,5 +1,6 @@
 import tabulate
 import networkx as nx
+from IPython.display import HTML, display
 
 from api_call_handler import ApiCallHandler
 from visjupyter_helper import find_edge_label, path2Graph, draw_graph
@@ -89,7 +90,7 @@ class BioThingsExplorer:
         """
         pathDict = []
         for i in range(0, len(pathList)-1, 2):
-            list2dict = {'input': pathList[i], 'endpoint': pathList[i+1], 
+            list2dict = {'input': pathList[i], 'endpoint': pathList[i+1],
                          'output': pathList[i+2]}
             list2dict.update({'relation': find_edge_label(self.api_map, pathList[i+1], pathList[i+2], relation_filter)})
             pathDict.append(list2dict)
@@ -143,7 +144,7 @@ class BioThingsExplorer:
                 elif child not in visited:
                     visited.append(child)
                     stack.append(self.api_map.successors_iter(child))
-            else: #len(visited) == cutoff:
+            else:
                 if child == end or end in children:
                     new_path = visited + [end]
                     if new_path not in paths:
@@ -152,7 +153,8 @@ class BioThingsExplorer:
                 visited.pop()
         for _path in paths:
             # user specify both excluded_nodes and intermediate_nodes
-            if excluded_nodes and intermediate_nodes and len(set(excluded_nodes) - set(_path))==len(excluded_nodes) and not set(intermediate_nodes) - set(_path):
+            if excluded_nodes and intermediate_nodes and len(set(excluded_nodes) - set(_path)) == len(excluded_nodes)\
+                    and not set(intermediate_nodes) - set(_path):
                 final_results.append(_path)
             # user only specify excluded_nodes
             elif excluded_nodes and len(set(excluded_nodes) - set(_path)) == len(excluded_nodes) and not intermediate_nodes:
@@ -167,7 +169,7 @@ class BioThingsExplorer:
                 continue
         if not dictformat:
             return final_results
-        elif display_graph=True:
+        elif display_graph:
             dict_results = [self.path_conversion(_path, relation_filter) for _path in final_results]
             G_path = path2Graph(dict_results)
             self.graph_id += 1
