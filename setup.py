@@ -38,6 +38,11 @@ setup(
     ],
     install_requires=[
         'requests>=2.3.0',
-        "PyLD>=0.7.2"
+        "PyLD>=0.7.2",
+        "visJS2jupyter>=0.1.8",
+        "networkx>=2.0",
+        "pandas>=0.21.0",
+        "tabulate>=0.8.2",
+        "ipython>=6.2.1"
     ],
 )
