@@ -19,6 +19,10 @@ class BioThingsExplorer:
         This function displays available IDs in Jupyter Notebook in Tabel format
         The columns of the table includes Preferred Name, URI, description, Identifier Pattern and Type
         Each row represents one bioentity ID in the registry
+
+        Return
+        ======
+        Table in Jupyter Notebook Cell
         """
         table = [['Preferred Name', 'URI', 'Description', 'Identifier pattern', 'Type']]
         for uri, info in self.api_handler.bioentity_info.items():
@@ -30,6 +34,10 @@ class BioThingsExplorer:
         This function will add all API, endpoint, input/output info
         as well as the relationship between endpoint and output
         into the networkx MultiGraph.
+
+        Return
+        ======
+        MultiDiGraph
         """
         # add nodes and edges between api and endpoints
         for _api, _info in self.registry.api_info.items():
@@ -54,6 +62,10 @@ class BioThingsExplorer:
     def draw_api_road_map(self):
         """
         This function displays the api road map in the jupyter notebook cell block
+
+        Return
+        ======
+        VisJupyter Graph
         """
         if not self.api_map.nodes():
             print('Please call construct_api_road_map function first!')
