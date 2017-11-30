@@ -1,9 +1,9 @@
 import json
 import requests
 
-from api_registry_parser import RegistryParser
-from jsonld_processor import json2nquads
-from utils import int2str
+from .api_registry_parser import RegistryParser
+from .jsonld_processor import json2nquads
+from .utils import int2str
 
 class ApiCallHandler:
     def __init__(self):
@@ -185,7 +185,7 @@ class ApiCallHandler:
             jsonld_context = self.registry.endpoint_info[endpoint_name]['jsonld_context']
             outputs = json2nquads(json_doc, jsonld_context, output_uri, predicate)
             if outputs:
-                return (outputs, output_uri)
+                return (outputs, self.registry.bioentity_info[output_uri]['preferred_name'])
             else:
                 print("No output could be found from the given json_doc and output type!")
                 return
@@ -208,7 +208,7 @@ class ApiCallHandler:
             except:
                 print("Could not extract the output from the path given {}".format(outputs_command))
                 return
-            return (outputs, output_uri)
+            return (outputs, self.registry.bioentity_info[output_uri]['preferred_name'])
 
     def input2output(self, input_type, input_value, endpoint_name, output_type, predicate=None, additional_parameters={}, type='prefix'):
         """
@@ -223,7 +223,7 @@ class ApiCallHandler:
             input_type = self.registry.prefix2uri(input_type)
             output_type = self.registry.prefix2uri(output_type)
         final_results = []
-        input
+
         # preprocess the input
         processed_input = self.preprocessing_input(input_value, endpoint_name)
         # retrieve json doc
@@ -240,7 +240,7 @@ class ApiCallHandler:
             # extract the output based on output_type & predicate
             output_info = self.extract_output(json_doc, endpoint_name, output_type, predicate=predicate)
             if output_info:
-                final_results.append({'input': (_input_value, input_type), 'output': (output_info, output_type)})
+                final_results.append({'input': (_input_value, self.registry.bioentity_info[input_type]['preferred_name']), 'output': (output_info)})
             else:
                 print('The API call returns response. But no appropriate output could be extracted. Output type given is : {}. Predicate given is: {}'
                       .format(output_type, predicate))
