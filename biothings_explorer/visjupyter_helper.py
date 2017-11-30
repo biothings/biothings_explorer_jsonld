@@ -49,3 +49,62 @@ def draw_graph(G, graph_id=1):
                                                       max_velocity=15,
                                                       min_velocity=1,
                                                       edge_smooth_enabled = True)
+
+def find_edge_label(G, source, target, relation=None):
+    """
+    Given a MultiDiGraph, together with a source, target pair
+    Return the edge label info associated with the (source, target) pair
+    1) If only one label exists, return the label
+    2) When multiple label exists, if relation parameter is in the label(s), return the relation parameter
+    3) If relation parameter not in the labels, return None
+    
+    Parmas
+    ======
+    G: (multiDiGraph)
+        a multiDiGraph containaing nodes, edges and labels
+    source: (multiDiGraph node)
+    target: (multiDiGraph node)
+    relation:
+        The label given by user, default is None
+    
+    Return
+    ======
+        label info for the source target pair
+    """
+    if (source, target) not in G.edges():
+        print('The given pair source-target pair ({}, {}) is not in the graph!'.format(source, target))
+        return None
+    edge_labels = [v['label'] for k, v in G.edge[source][target].items()]
+    if len(edge_labels) == 1:
+        return edge_labels[0]
+    elif len(edge_labels) > 1 and not relation:
+        return edge_labels
+    elif len(edge_labels) > 1 and relation and relation in edge_labels:
+        return relation
+    else:
+        return None
+
+def path2Graph(paths):
+    """
+    Given a list of paths, convert it to networkx MulitDiGraph format
+    
+    Parmas
+    ======
+    paths: (list)
+        list of paths connecting from A to B
+    
+    Return
+    ======
+        MultiDiGraph
+    """
+    G = nx.MultiDiGraph()
+    for _path in paths:
+        for _subpath in _path:
+            G.add_node(_subpath['endpoint'], type='endpoint', color='blue')
+            G.add_node(_subpath['input'], type='bioentity', color='yellow')
+            G.add_node(_subpath['output'], type='bioentity', color='yellow')
+            G.add_edge(_subpath['input'], _subpath['endpoint'], label='has_input')
+            if type(_subpath['relation']) == list:
+                for _relation in _subpath['relation']:
+                    G.add_edge(_subpath['endpoint'], _subpath['output'], label=_realtion)
+    return G
