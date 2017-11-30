@@ -106,5 +106,7 @@ def path2Graph(paths):
             G.add_edge(_subpath['input'], _subpath['endpoint'], label='has_input')
             if type(_subpath['relation']) == list:
                 for _relation in _subpath['relation']:
-                    G.add_edge(_subpath['endpoint'], _subpath['output'], label=_realtion)
+                    G.add_edge(_subpath['endpoint'], _subpath['output'], label=_relation)
+            else:
+                G.add_edge(_subpath['endpoint'], _subpath['output'], label=_subpath['relation'])
     return G
