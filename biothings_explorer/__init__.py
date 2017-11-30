@@ -2,8 +2,9 @@ import tabulate
 import networkx as nx
 from IPython.display import HTML, display
 
-from api_call_handler import ApiCallHandler
-from visjupyter_helper import find_edge_label, path2Graph, draw_graph
+from .api_call_handler import ApiCallHandler
+from .visjupyter_helper import find_edge_label, path2Graph, draw_graph, explore2Graph
+from .utils import output2input
 
 class BioThingsExplorer:
     def __init__(self, loadroadmap=True):
@@ -15,6 +16,7 @@ class BioThingsExplorer:
         self.paths = None
         self.selected_path = None
         self.graph_id = 0
+        self.temp_results = {}
         if loadroadmap:
             self.construct_api_road_map()
 
@@ -174,9 +176,56 @@ class BioThingsExplorer:
         if not dictformat:
             return final_results
         elif display_graph:
-            dict_results = [self.path_conversion(_path, relation_filter) for _path in final_results]
-            G_path = path2Graph(dict_results)
+            self.paths = [self.path_conversion(_path, relation_filter) for _path in final_results]
+            G_path = path2Graph(self.paths)
             self.graph_id += 1
             return draw_graph(G_path, graph_id=self.graph_id)
         else:
             return [self.path_conversion(_path, relation_filter) for _path in final_results]
+
+    def find_output(self, path, input_value, display_graph=True):
+        """
+        Given a user chosen path from input to output, together with
+        a user given input_value
+        return a graph displaying input and output, together with all
+        intermediate results
+
+        Params
+        ======
+        path: (list)
+            containing (intermediate) steps from input to output
+        input_value: (list)
+            input for the path to begin with
+        display_graph:
+            whether to display the graph on jupyter notebook or not
+            if not, return a networkx multigraph containing all info
+        
+        TODO: handle multiple parameters
+        Return:
+            visJs graph display
+        """
+        self.selected_path = path
+        self.temp_results = {}
+        path_input = input_value
+        for i, _path in enumerate(path):
+            print('Currently working on path {}. The path connects from {} to {} using {}!!'.format(i, _path['input'], _path['output'], _path['endpoint']))
+            path_output = self.apiCallHandler.input2output(_path['input'], path_input, _path['endpoint'], _path['output'], _path['relation'])
+            if path_output:
+                self.temp_results.update({i: path_output})
+                path_input = output2input(path_output)
+            else:
+                print('No results could be found for the given path!! The exploration ended!')
+                self.temp_G = explore2Graph(self.temp_results)
+                self.graph_id += 1
+                if display_graph:
+                    return draw_graph(self.temp_G, graph_id=self.graph_id)
+                else:
+                    return self.temp_G
+            print('Done!!!')
+        self.temp_G = explore2Graph(self.temp_results)
+        self.graph_id += 1
+        if display_graph:
+            return draw_graph(self.temp_G, graph_id=self.graph_id)
+        else:
+            return self.temp_G
+
