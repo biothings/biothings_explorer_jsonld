@@ -12,6 +12,8 @@ class BioThingsExplorer:
         self.registry = self.apiCallHandler.registry
         self.api_map = nx.MultiDiGraph()
         self.temp_G = nx.MultiDiGraph()
+        self.paths = None
+        self.selected_path = None
         self.graph_id = 0
         if loadroadmap:
             self.construct_api_road_map()
@@ -119,6 +121,8 @@ class BioThingsExplorer:
         ======
         list of paths, each path is a list containing the nodes
         """
+        self.paths = None
+        self.selected_path = None
         cutoff = max_no_api_used * 2 + 1
         if cutoff < 1:
             print('please specify max_no_api_used with a number >= 1')
