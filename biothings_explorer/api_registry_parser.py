@@ -8,7 +8,6 @@ from jsonld_processor import find_base
 
 
 class RegistryParser:
-
     def __init__(self, readmethod, initialize=False):
         """
         Parse the openapi files and JSON-LD context files located at
@@ -65,6 +64,25 @@ class RegistryParser:
                                                'description': row['Description'], 'identifier_pattern': row['Identifier pattern'],
                                                'preferred_name': row['Recommended name'], 'type': row['Type']}
         return self.bioentity_info
+
+    def prefix2uri(self, prefix):
+        """
+        Given a bio-entity in prefix format, return its URI
+
+        Params
+        ======
+        prefix: (str)
+            bio-entity in prefix format
+
+        Return
+        ======
+        bio-entity in its URI format
+        """
+        for k, v in self.bioentity_info.items():
+            if v['preferred_name'] == prefix:
+                return k
+        # print error message if no URI was found
+        print('No URI could be found for the prefix provided: {}'.format(prefix))
 
     def read_api_list_file(self):
         """
