@@ -109,3 +109,38 @@ def path2Graph(paths):
             else:
                 G.add_edge(_subpath['endpoint'], _subpath['output'], label=_subpath['relation'])
     return G
+
+def explore2Graph(exploreresults):
+    """
+    Given path exploration results, convert it to networkx MultiDiGraph format
+
+    Params
+    ======
+    exploreresults: (dict)
+        dict key represents layer, dict value represents input and output
+
+    Return
+    ======
+        networkx multiDiGraph
+    """
+    color_schema = {0: 'red', 1: 'blue', 2: 'green', 3: 'yellow', 4: 'pink', 5: 'black'}
+    G = nx.MultiDiGraph()
+    for layer, results in exploreresults.items():
+        for _result in results:
+            if 'input' in _result:
+                _input = _result['input'][1] + ':' + _result['input'][0]
+                if layer == 0:
+                    G.add_node(_input, type='bioentity', color=color_schema[layer])
+                if 'output' in _result:
+                    output_type = _result['output'][1]
+                    i = 0
+                    for _output_result in _result['output'][0]:
+                        if type(_output_result[0]) == str:
+                            _output = output_type + ':' + _output_result[0]
+                        else:
+                            _output = output_type + ' ' + str(i)
+                            i += 1
+                        G.add_node(_output, type='bioentity', color=color_schema[layer+1])
+                        G.add_edge(_input, _output, label=_output_result[1])
+    return G
+
