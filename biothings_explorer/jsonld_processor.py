@@ -51,7 +51,7 @@ def fetchvalue(nquads, object_uri, predicate=None):
     # check if it's a valid nquads
     if nquads and '@default' in nquads:
         for _nquad in nquads['@default']:
-            if predicate and object_uri in _nquad['object']['value'] and _nquad['predicate']['value'].split('/')[-1] == predicate:
+            if predicate and object_uri in _nquad['object']['value'] and _nquad['predicate']['value'].split('/')[-1] == predicate.split(':')[-1]:
                 results.append((_nquad['object']['value'].split(object_uri)[1], _nquad['predicate']['value'].split('/')[-1]))
             elif not predicate and object_uri in _nquad['object']['value']:
                 results.append((_nquad['object']['value'].split(object_uri)[1], _nquad['predicate']['value'].split('/')[-1]))
