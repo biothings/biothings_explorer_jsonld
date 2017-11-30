@@ -2,7 +2,7 @@ import tabulate
 import networkx as nx
 
 from api_call_handler import ApiCallHandler
-from visjupyter_helper import find_edge_label
+from visjupyter_helper import find_edge_label, path2Graph, draw_graph
 
 class BioThingsExplorer:
     def __init__(self, loadroadmap=True):
@@ -45,19 +45,19 @@ class BioThingsExplorer:
             self.api_map.add_node(_api, type='api', color='red')
             for _endpoint in _info['endpoints']:
                 self.api_map.add_node(_endpoint, type='endpoint', color='blue')
-                self.api_map.add_edge(_endpoint, _api, label='has_endpoint')
+                self.api_map.add_edge(_api, _endpoint, label='has_endpoint')
         # add endpoint and input/output to the graph
         for _endpoint, _info in self.registry.endpoint_info.items():
             for _input in _info['input']:
                 preferred_name = self.registry.bioentity_info[_input]['preferred_name']
                 self.api_map.add_node(preferred_name, type='bioentity', color='yellow')
-                self.api_map.add_edge(_endpoint, preferred_name, label='has_input')
+                self.api_map.add_edge(preferred_name, _endpoint, label='has_input')
             for _output in _info['output']:
                 preferred_name = self.registry.bioentity_info[_output]['preferred_name']
                 self.api_map.add_node(preferred_name, type='bioentity', color='yellow')
                 relations = _info['relation'][_output]
                 for _relation in relations:
-                    self.api_map.add_edge(preferred_name, _endpoint, label=_relation)
+                    self.api_map.add_edge(_endpoint, preferred_name, label=_relation)
         return self.api_map
 
     def draw_api_road_map(self):
@@ -88,13 +88,14 @@ class BioThingsExplorer:
             user specified edge label
         """
         pathDict = []
-        for i in range(0, len(pathList), 2):
+        for i in range(0, len(pathList)-1, 2):
             list2dict = {'input': pathList[i], 'endpoint': pathList[i+1], 
                          'output': pathList[i+2]}
             list2dict.update({'relation': find_edge_label(self.api_map, pathList[i+1], pathList[i+2], relation_filter)})
-            path_conversion.append(list2dict)
+            pathDict.append(list2dict)
+        return pathDict
 
-    def find_path(self, start, end, max_no_api_used=4, intermediate_nodes=[], excluded_nodes=[], relation_filter=None, dictformat=False):
+    def find_path(self, start, end, max_no_api_used=4, intermediate_nodes=[], excluded_nodes=[], relation_filter=None, dictformat=True, display_graph=True):
         """
         return paths connecting start and end bio-entity specified
 
@@ -110,8 +111,9 @@ class BioThingsExplorer:
             node(s) which the path must contain
         excluded_nodes: (list)
             node(s) which the path must not contain
-        
-        TODO: include relation_filter
+        relation_filter: (string)
+            specify the edge label
+
         Return
         ======
         list of paths, each path is a list containing the nodes
@@ -165,8 +167,10 @@ class BioThingsExplorer:
                 continue
         if not dictformat:
             return final_results
-        else:
+        elif display_graph=True:
             dict_results = [self.path_conversion(_path, relation_filter) for _path in final_results]
-            return dict_results
-
-
+            G_path = path2Graph(dict_results)
+            self.graph_id += 1
+            return draw_graph(G_path, graph_id=self.graph_id)
+        else:
+            return [self.path_conversion(_path, relation_filter) for _path in final_results]
