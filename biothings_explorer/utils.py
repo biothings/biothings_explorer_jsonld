@@ -75,7 +75,7 @@ def str2list(_input):
     if the type is list, return the input without modification
     if the ytpe is string, turn it into list and return
 
-    Parmas
+    Params
     ======
     _input: (str or list)
         input to the modification
@@ -84,3 +84,24 @@ def str2list(_input):
         return _input
     else:
         return [_input]
+
+def output2input(_output):
+    """
+    This function modifies the output,
+    so that it could be consumed as input for another path
+
+    Params
+    ======
+    _output: (list)
+        output to be modified
+
+    Return
+    ======
+    list of ids
+    """
+    result = []
+    for _iopair in _output:
+        output_list = _iopair['output'][0]
+        result.extend([_o[0] for _o in output_list])
+    return result
+
