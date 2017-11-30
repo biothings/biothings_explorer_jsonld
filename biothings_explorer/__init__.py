@@ -8,8 +8,8 @@ class BioThingsExplorer:
         self.graph_id = 1
         self.apiCallHandler = ApiCallHandler()
         self.registry = self.apiCallHandler.registry
-        self.api_map = nx.MultiGraph()
-        self.temp_G = nx.MultiGraph()
+        self.api_map = nx.MultiDiGraph()
+        self.temp_G = nx.MultiDiGraph()
         self.graph_id = 0
         if loadroadmap:
             self.construct_api_road_map()
@@ -59,4 +59,74 @@ class BioThingsExplorer:
             print('Please call construct_api_road_map function first!')
             return
         return draw_graph(self.api_map, graph_id=self.graph_id = self.graph_id + 1)
+
+    def find_path(self, start, end, max_no_api_used=4, intermediate_nodes=[], excluded_nodes=[], relation_filter=None):
+        """
+        return paths connecting start and end bio-entity specified
+
+        Params
+        ======
+        start: (str)
+            path start point
+        end: (str)
+            path end point
+        max_no_api_used: (int)
+            maximum number of api(s) included in the path
+        intermediate_nodes: (list)
+            node(s) which the path must contain
+        excluded_nodes: (list)
+            node(s) which the path must not contain
+
+        Return
+        ======
+        list of paths, each path is a list containing the nodes
+        """
+        cutoff = max_no_api_used * 2 + 1
+        if cutoff < 1:
+            print('please specify max_no_api_used with a number >= 1')
+            return
+        if start not in self.api_map.nodes() or end not in self.api_map.nodes():
+            print('the start and end position is not in the api_map')
+            return
+        visited = [start]
+        stack = [self.api_map.successors_iter(start)]
+        paths = []
+        final_results = []
+        while stack:
+            children = stack[-1]
+            child = next(children, None)
+            if child is None:
+                stack.pop()
+                visited.pop()
+            elif len(visited) < cutoff:
+                if child == end:
+                    new_path = visited + [end]
+                    if new_path not in paths:
+                        paths.append(visited + [end])
+                elif child not in visited:
+                    visited.append(child)
+                    stack.append(self.api_map.successors_iter(child))
+            else: #len(visited) == cutoff:
+                if child == end or end in children:
+                    new_path = visited + [end]
+                    if new_path not in paths:
+                        paths.append(visited + [end])
+                stack.pop()
+                visited.pop()
+        for _path in paths:
+            # user specify both excluded_nodes and intermediate_nodes
+            if excluded_nodes and intermediate_nodes and len(set(excluded_nodes) - set(_path))==len(excluded_nodes) and not set(intermediate_nodes) - set(_path):
+                final_results.append(_path)
+            # user only specify excluded_nodes
+            elif excluded_nodes and len(set(excluded_nodes) - set(_path)) == len(excluded_nodes) and not intermediate_nodes:
+                final_results.append(_path)
+            # user only specify intermediate nodes
+            elif intermediate_nodes and not set(intermediate_nodes) - set(_path) and not excluded_nodes:
+                final_results.append(_path)
+            # user specify neither excluded_nodes nor intermediate_nodes
+            elif not intermediate_nodes and not excluded_nodes:
+                final_results.append(_path)
+            else:
+                continue
+        return final_results
 
