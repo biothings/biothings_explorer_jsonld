@@ -2,9 +2,9 @@ from urllib.parse import urljoin
 import os.path
 from collections import defaultdict
 
-from utils import readFile
-from config import FILE_PATHS
-from jsonld_processor import find_base
+from .utils import readFile
+from .config import FILE_PATHS
+from .jsonld_processor import find_base
 
 
 class RegistryParser:
