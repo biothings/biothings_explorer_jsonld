@@ -162,5 +162,10 @@ class BioThingsExplorer:
                 final_results.append(_path)
             else:
                 continue
-        return final_results
+        if !dictformat
+            return final_results
+        else:
+            dict_results = [self.path_conversion(_path, relation_filter) for _path in final_results]
+            return dict_results
+
 
