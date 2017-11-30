@@ -2,6 +2,7 @@ import tabulate
 import networkx as nx
 
 from api_call_handler import ApiCallHandler
+from visjupyter_hepler import find_edge_label
 
 class BioThingsExplorer:
     def __init__(self, loadroadmap=True):
@@ -72,7 +73,27 @@ class BioThingsExplorer:
             return
         return draw_graph(self.api_map, graph_id=self.graph_id = self.graph_id + 1)
 
-    def find_path(self, start, end, max_no_api_used=4, intermediate_nodes=[], excluded_nodes=[], relation_filter=None):
+    def path_conversion(self, pathList, relation_filter=None):
+        """
+        converted path from list to dict
+        Example: [1, 2, 3, 4, 5] ==> [{'input': 1, 'endpoint': 2, 'output': 3, relation: '...'},
+                                      {'input': 3, 'endpoint': 4, 'output': 5, relation: '...'}]
+
+        Params
+        ======
+        pathList: (list)
+            A list containing one path from start to end
+        relation_filter: (str)
+            user specified edge label
+        """
+        pathDict = []
+        for i in range(0, len(pathList), 2):
+            list2dict = {'input': pathList[i], 'endpoint': pathList[i+1], 
+                         'output': pathList[i+2]}
+            list2dict.update({'relation': find_edge_label(self.api_map, pathList[i+1], pathList[i+2], relation_filter)})
+            path_conversion.append(list2dict)
+
+    def find_path(self, start, end, max_no_api_used=4, intermediate_nodes=[], excluded_nodes=[], relation_filter=None, dictformat=False):
         """
         return paths connecting start and end bio-entity specified
 
@@ -88,7 +109,8 @@ class BioThingsExplorer:
             node(s) which the path must contain
         excluded_nodes: (list)
             node(s) which the path must not contain
-
+        
+        TODO: include relation_filter
         Return
         ======
         list of paths, each path is a list containing the nodes
