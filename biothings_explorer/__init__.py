@@ -173,15 +173,15 @@ class BioThingsExplorer:
                 final_results.append(_path)
             else:
                 continue
+        self.paths = [self.path_conversion(_path, relation_filter) for _path in final_results]
+        self.temp_G = path2Graph(self.paths)
         if not dictformat:
             return final_results
         elif display_graph:
-            self.paths = [self.path_conversion(_path, relation_filter) for _path in final_results]
-            G_path = path2Graph(self.paths)
             self.graph_id += 1
-            return draw_graph(G_path, graph_id=self.graph_id)
+            return draw_graph(self.temp_G, graph_id=self.graph_id)
         else:
-            return [self.path_conversion(_path, relation_filter) for _path in final_results]
+            return self.paths
 
     def find_output(self, path, input_value, display_graph=True):
         """
