@@ -62,7 +62,7 @@ class RegistryParser:
         for index, row in data.iterrows():
             self.bioentity_info[row['URI']] = {'registry_identifier': row['Registry identifier'], 'alternative_names': row['Alternative name(s)'],
                                                'description': row['Description'], 'identifier_pattern': row['Identifier pattern'],
-                                               'preferred_name': row['Recommended name'], 'type': row['Type']}
+                                               'preferred_name': row['Recommended name'], 'type': row['Type'], 'semantic type': row['Semantic Type']}
         return self.bioentity_info
 
     def prefix2uri(self, prefix):
