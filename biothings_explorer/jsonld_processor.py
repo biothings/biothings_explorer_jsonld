@@ -109,5 +109,9 @@ def json2nquads(json_doc, context_file_path, output, predicate=None):
     context_file = readFile(context_file_path)
     json_doc.update(context_file)
     nquads = jsonld2nquads(json_doc)
-    outputs = list(set(fetchvalue(nquads, output, predicate=predicate)))
-    return outputs
+    output = fetchvalue(nquads, output, predicate=predicate)
+    if output:
+        outputs = list(set(output))
+        return outputs
+    else:
+        return None
