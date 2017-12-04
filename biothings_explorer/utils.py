@@ -48,10 +48,10 @@ def readFile(file_path):
             print('The url "{}" is invalid!!!! Please double check!'.format(file_path))
             return
     else:
-        if Path(file_path).is_file():
+        if Path(file_path).is_file() and not file_path.endswith('csv'):
             with open(file_path) as f:
                 data = f.read()
-        else:
+        elif not file_path.endswith('csv'):
             print('The local file path "{}" is invalid!!! Please double check!'.format(file_path))
             return
     # handle csv file using pandas module
