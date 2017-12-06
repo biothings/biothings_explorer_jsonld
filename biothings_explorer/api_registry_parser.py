@@ -65,7 +65,7 @@ class RegistryParser:
                                                'preferred_name': row['Recommended name'], 'type': row['Type'], 'semantic type': row['Semantic Type']}
         return self.bioentity_info
 
-    def prefix2uri(self, prefix):
+    def prefix2uri(self, prefix, verbose=False):
         """
         Given a bio-entity in prefix format, return its URI
 
@@ -81,8 +81,9 @@ class RegistryParser:
         for k, v in self.bioentity_info.items():
             if v['preferred_name'] == prefix:
                 return k
-        # print error message if no URI was found
-        print('No URI could be found for the prefix provided: {}'.format(prefix))
+        if verbose:
+            # print error message if no URI was found
+            print('No URI could be found for the prefix provided: {}'.format(prefix))
 
     def read_api_list_file(self):
         """
