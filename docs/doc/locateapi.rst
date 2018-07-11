@@ -19,6 +19,47 @@ from gene to drug using the BioThings Explorer pyton client:
 
     In [3]: print(locator.locate_apis_by_input_output_semantic_types(input_semantic_type='gene', output_semantic_type='chemical'))
 
+Here is an example of the output:
+
+.. code-block:: json
+
+    [{
+      "endpoint": "https://pharos.nih.gov/idg/api/v1/targets({geneid})", 
+      "predicate": "GeneOrGeneProductToChemicalAssociation", 
+      "object": {
+        "semantic_type": "chemical", 
+        "prefix": "pharos.ligand"
+        }, 
+      "subject": {
+        "semantic_type": "gene", 
+        "prefix": "pharos.target"
+        }
+     }, 
+     {
+      "endpoint": "http://dgidb.genome.wustl.edu/api/v2/interactions.json?genes={genesymbol}", 
+      "predicate": "GeneOrGeneProductToChemicalAssociation", 
+      "object": {
+        "semantic_type": "chemical", 
+        "prefix": "chembl.compound"
+        }, 
+      "subject": {
+        "semantic_type": "gene", 
+        "prefix": "hgnc.symbol"
+        }
+     }, 
+     {
+      "endpoint": "http://MyChem.info/v1/querybydrugtarget", 
+      "predicate": "GeneOrGeneProductToChemicalAssociation", 
+      "object": {
+        "semantic_type": "chemical", 
+        "prefix": "inchikey"
+        }, 
+      "subject": {
+        "semantic_type": "gene", 
+        "prefix": "uniprot"
+        }
+    }]
+
 .. hint::
 
 	For how to access all semantic types used in BioThings Explorer, please reference: :ref:`semantic_type`
