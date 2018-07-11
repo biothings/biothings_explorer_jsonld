@@ -1,3 +1,4 @@
+import unittest
 from unittest import TestCase
 
 from biothings_explorer_test import fetch_output
