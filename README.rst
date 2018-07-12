@@ -1,29 +1,76 @@
-# biothings_explorer.py
-Python Client for BioThings Explorer
+.. biothings_explorer documentation master file, created by
+   sphinx-quickstart on Mon Jul  9 15:02:17 2018.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-[BioThings Explorer](http://biothings.io/explorer/) is a service to provide central access to multiple biological Application Programming Interfaces (APIs). This repo wraps major functions provided by BioThings Explorer API and make them easily accessible through the Python client.
+Documentation for BioThings Explorer
+====================================
 
-Intro
-=====
+Introduction
+------------
+`BioThings Explorer <http://biothings.io/explorer>`_ integrates a variety of biomedical API resources and make them available through a central access point. By addressing the data interoperability issue across different APIs through `SmartAPI <http://smart-api.info/>`_ and `JSON-LD <https://json-ld.org/>`_ technologies, BioThings Explorer allows users to perform federated queries across multiple different databases as well as conduct linked biomedical knowledge discovery, e.g. find all **drugs** which interacts with **proteins** produces by **genes** involved in a specific **biological pathway**.
 
-[BioThings Explorer](http://biothings.io/explorer/) is a service to provide central access to multiple biological Application Programming Interfaces (APIs). And *biothings_explorer.py* is an easy-to-use Python wrapper for the service.  Currently, the following APIs are available for data access in BioThings Explorer:
+User's Guide
+-------------
 
-    * MyGene.info API - Provide access to gene annotations.
-    * MyChem.info API - Provide access to chemical annotations.
-    * MyDisease.info API - Provide access to disease annotations.
-    * DGIdb API - Database for Drug-Gene interactions.
-    * ChEMBL API - Database of bioactive drug-like small molecules.
-    * Pharos API - Provide access to gene annotations.
-    * Disease Ontology API - Provide standard ontology for human disease.
-    * Reactome API - Pathway database which provides intuitive bioinformatics tools for the interpretation and analysis of pathway knowledge.
-    * PubChem API - Database of chemical molecules and their activities against biological assays
-    * HGNC API - A curated online repository of HGNC-approved gene nomenclature, gene families and associated resources.
-    * EBI Ontology API - A repository of bio-medical ontologies.
-    * BioLink API - API for linked biological knowledge.
+The main documentation of this site could be organized into the following sections.
 
+.. toctree::
+   :maxdepth: 2
 
+   doc/metadata
+   doc/locateapi
+   doc/fetchdata
+
+   
 Requirements
 ============
-    python >=2.6 (including python3)
+    1. python >=2.6 (including python3)
 
-    requests_ (install using "pip install requests")
+    2. requests (install using "pip install requests")
+
+Installation
+=============
+
+Either install from source, like:
+
+.. code-block:: bash
+    
+    git clone https://github.com/biothings/biothings_explorer.git
+    cd biothings_explorer
+    python setup.py install
+
+or use pip, like:
+
+.. code-block:: bash
+
+    pip install biothings_explorer
+
+or directly from our repository, like:
+
+.. code-block:: bash
+
+    pip install git+https://github.com/biothings/biothings_explorer.git#egg=biothings_explorer
+
+
+For Developers
+---------------
+
+
+.. toctree::
+   :maxdepth: 2
+
+   doc/code
+
+How to cite
+===========
+`Our paper on JSON-LD <https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-018-2041-5>`_
+
+Related Links
+=============
+* `BioThings Explorer Web Interface <http://biothings.io/explorer>`_
+* `BioThings Explorer Web Github <https://github.com/biothings/biothings_explorer_web>`_
+* `BioThings Explorer Python Client Github <https://github.com/biothings/biothings_explorer>`_
+* `SmartAPI <http://smart-api.info/>`_
+* `JSON-LD <https://json-ld.org/>`_
+
