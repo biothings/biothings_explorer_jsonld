@@ -60,7 +60,7 @@ For Developers
 .. toctree::
    :maxdepth: 2
 
-   doc/test
+   doc/code
 
 How to cite
 ===========
