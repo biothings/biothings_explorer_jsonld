@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(
-    name="biothings_explorer_test",
+    name="biothings_explorer",
     version="0.3.0",
     author="Jiwen Xin, Chunlei Wu",
     author_email="cwu@scripps.edu",
@@ -15,7 +15,7 @@ setup(
     license="BSD",
     keywords="link API interoperability biology explore",
     url="https://github.com/biothings/biothings_explorer",
-    packages=['biothings_explorer_test'],
+    packages=['biothings_explorer'],
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
